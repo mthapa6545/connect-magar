@@ -46,6 +46,8 @@ namespace ConnectMagar.Controllers
             {
                 _db.Accounts.Add(model);
                 _db.SaveChanges();
+                
+                TempData["Msg"]="Success";
                 return RedirectToAction("Login");
             }
             return View(model);

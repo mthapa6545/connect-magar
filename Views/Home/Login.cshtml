@@ -22,6 +22,10 @@
                                     {
                                         <div class="alert alert-danger">@ViewBag.Error</div>
                                     }
+                                    @if(!string.IsNullOrEmpty(string.Format("{0}",TempData["Msg"])))
+                                    {
+                                        <div class="alert alert-success">@string.Format("{0}",TempData["Msg"])</div>
+                                    }
                                     <form class="user" asp-controller="Home" asp-action="Login">
                                         <div class="form-group">
                                             <input name="username" type="email" class="form-control form-control-user"
