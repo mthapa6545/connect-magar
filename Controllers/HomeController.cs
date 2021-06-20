@@ -71,6 +71,7 @@ namespace ConnectMagar.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim("username", username),
+                        new Claim("image", string.Format("{0}-{1}-{2}.jpg",account.FirstName, account.LastName, account.AccountID)),
                         new Claim("displayname", string.Format("{0} {1}", account.FirstName, account.LastName )),
                         new Claim("role", "User")
                     };
