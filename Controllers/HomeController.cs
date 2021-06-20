@@ -25,7 +25,6 @@ namespace ConnectMagar.Controllers
             _db= db;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             return View();
