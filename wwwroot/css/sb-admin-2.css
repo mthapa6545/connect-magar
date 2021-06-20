@@ -10861,19 +10861,19 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://www.thejournalnj.com/wp-content/uploads/2019/04/Julian-Caban-Missing-Person-Red-Bank-Tinton-Falls-NJ.jpg");
+  background: url("/img/login-bg.jpg");
   background-position: center;
   background-size: cover;
 }
 
 .bg-register-image {
-  background: url("https://www.thejournalnj.com/wp-content/uploads/2019/04/Julian-Caban-Missing-Person-Red-Bank-Tinton-Falls-NJ.jpg");
+  background: url("/img/login-bg.jpg");
   background-position: center;
   background-size: cover;
 }
 
 .bg-password-image {
-  background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
+  background: url("/img/login-bg.jpg");
   background-position: center;
   background-size: cover;
 }
