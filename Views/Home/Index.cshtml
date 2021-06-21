@@ -19,7 +19,7 @@
         {
             <div class="col">
           <div class="card shadow-sm">
-            <img src="/img/persons/@string.Format("{0}-{1}-{2}.jpg", person.FirstName.ToLower(), person.LastName.ToLower(), person.PersonID)" class="bd-placeholder-img card-img-top" width="100%" height="180" onerror="imgError(this)">
+            <img src="/img/persons/@person.ImageFileName" class="bd-placeholder-img card-img-top" width="100%" height="180" onerror="imgError(this)">
             
             <div class="card-body">
                <h5 class="card-title">@string.Format("{0} {1}",person.FirstName, person.LastName)</h5>

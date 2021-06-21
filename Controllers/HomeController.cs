@@ -13,6 +13,7 @@ using ConnectMagar.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ConnectMagar.Services;
+using System.IO;
 
 namespace ConnectMagar.Controllers
 {
@@ -207,8 +208,8 @@ namespace ConnectMagar.Controllers
             .Include(x=>x.NepalAddress)
             .FirstOrDefault(x=> x.Email== model.Person.Email.ToLower());
 
-            person.FirstName = model.Person.FirstName.Trim().ToLower();
-            person.LastName= model.Person.LastName.Trim().ToLower();
+            person.FirstName = model.Person.FirstName.Trim();
+            person.LastName= model.Person.LastName.Trim();
             person.Gender = model.Person.Gender;
             person.Phone = model.Person.Phone.Trim();
             person.Email = model.Person.Email.Trim().ToLower();
@@ -234,6 +235,18 @@ namespace ConnectMagar.Controllers
             person.DateUpdated = DateTime.Now;
 
             _db.SaveChanges();
+
+            //Copy image to folder
+            if(model.ImageFile.Length>0)
+            {
+                var fileExt = Path.GetExtension(model.ImageFile.FileName);
+                var filePath = $"/img/persons/{model.Person.FirstName}-{model.Person.LastName}-{model.Person.PersonID}.{fileExt}";
+
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    model.ImageFile.CopyTo(stream);
+                }
+            }
             
             ViewBag.Msg = "Success";
             return View(model);

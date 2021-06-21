@@ -13,8 +13,8 @@
 <form asp-controller="Home" asp-action="Profile" method="post">
     <div class="row">
         <div class="col-md-6">
-            <label for="photo" class="form-label">Please select photo</label>
-            <input type="file" class="form-control" id="photo" placeholder="photo">
+            <label asp-for="ImageFile" class="form-label">Please select photo</label>
+            <input type="file" class="form-control" asp-for="ImageFile" placeholder="photo">
         </div>
         <div class="col-md-6">
             <img src="...">

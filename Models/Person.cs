@@ -14,6 +14,7 @@ namespace ConnectMagar.Models
         public Address USAAddress { get; set; }
         public bool Approved { get; set; }
         public bool Visible { get; set; }
+        public string ImageFileName { get; set; }
 
         public DateTime DateCreated { get; set; }
         public DateTime DateApproved { get; set; }
