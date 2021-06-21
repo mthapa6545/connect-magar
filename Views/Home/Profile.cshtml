@@ -1,0 +1,57 @@
+@{
+    ViewData["Title"] = "Profile Page";
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <label for="firstname" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="firstname" placeholder="first name">
+    </div>
+    <div class="col-md-5">
+        <label for="lastname" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lastname" placeholder="last name">
+    </div>
+    <div class="col-md-2">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-select" aria-label="Default select" id="gender">
+            <option selected value="1">Male</option>
+            <option value="0">Female</option>
+        </select>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-12">
+        <label for="firstname" class="form-label">Bio</label>
+        <textarea type="multitext" class="form-control" id="firstname" placeholder="short bio"  rows="2"></textarea>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-6">
+        <h5>Address in USA</h5>
+        <label for="streetName" class="form-label">Street Name</label>
+        <input type="text" class="form-control" id="streetName" placeholder="street name">
+        <label for="city" class="form-label">City</label>
+        <input type="text" class="form-control" id="city" placeholder="city">
+        <label for="state-usa" class="form-label">State</label>
+        <select class="form-select" aria-label="Default select" id="state-usa">
+            <option selected value="1">Province 1</option>
+            <option value="0">Province 2</option>
+        </select>
+        <label for="zip" class="form-label">Zip</label>
+        <input type="text" class="form-control" id="zip" placeholder="zip">
+    </div>
+    <div class="col-md-6">
+        <h5>Address in Nepal</h5>
+        <label for="streetName" class="form-label">Street Name</label>
+        <input type="text" class="form-control" id="streetName" placeholder="street name">
+        <label for="city" class="form-label">City</label>
+        <input type="text" class="form-control" id="city" placeholder="city">
+        <label for="state-nepal" class="form-label">State</label>
+        <select class="form-select" aria-label="Default select" id="state-nepal">
+            <option selected value="1">Province 1</option>
+            <option value="0">Province 2</option>
+        </select>
+        <label for="zip" class="form-label">Zip</label>
+        <input type="text" class="form-control" id="zip" placeholder="zip">
+    </div>
+</div>
