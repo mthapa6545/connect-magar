@@ -1,8 +1,18 @@
+@model ConnectMagar.Models.ProfileViewModel
 @{
     ViewData["Title"] = "Profile Page";
 }
 
 <div class="row">
+    <div class="col-md-6">
+        <label for="photo" class="form-label">Please select photo</label>
+        <input type="file" class="form-control" id="photo" placeholder="photo">
+    </div>
+    <div class="col-md-6">
+        <img src="...">
+    </div>
+</div>
+<div class="row mt-5">
     <div class="col-md-5">
         <label for="firstname" class="form-label">First Name</label>
         <input type="text" class="form-control" id="firstname" placeholder="first name">
@@ -20,6 +30,16 @@
     </div>
 </div>
 <div class="row mt-2">
+    <div class="col-md-6">
+        <label for="phone" class="form-label">Phone</label>
+        <input type="text" class="form-control" id="phone" placeholder="phone">
+    </div>
+    <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="text" class="form-control" id="email" placeholder="email">
+    </div>
+</div>
+<div class="row mt-2">
     <div class="col-md-12">
         <label for="firstname" class="form-label">Bio</label>
         <textarea type="multitext" class="form-control" id="firstname" placeholder="short bio"  rows="2"></textarea>
@@ -33,10 +53,7 @@
         <label for="city" class="form-label">City</label>
         <input type="text" class="form-control" id="city" placeholder="city">
         <label for="state-usa" class="form-label">State</label>
-        <select class="form-select" aria-label="Default select" id="state-usa">
-            <option selected value="1">Province 1</option>
-            <option value="0">Province 2</option>
-        </select>
+        <select class="form-select" asp-for="StateOfUSA" asp-items="Model.StatesOfUSA"></select>
         <label for="zip" class="form-label">Zip</label>
         <input type="text" class="form-control" id="zip" placeholder="zip">
     </div>
@@ -47,9 +64,7 @@
         <label for="city" class="form-label">City</label>
         <input type="text" class="form-control" id="city" placeholder="city">
         <label for="state-nepal" class="form-label">State</label>
-        <select class="form-select" aria-label="Default select" id="state-nepal">
-            <option selected value="1">Province 1</option>
-            <option value="0">Province 2</option>
+        <select class="form-select" asp-for="StateOfNepal" asp-items="Model.StatesOfNepal">
         </select>
         <label for="zip" class="form-label">Zip</label>
         <input type="text" class="form-control" id="zip" placeholder="zip">

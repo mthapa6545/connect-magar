@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ConnectMagar.Data;
 using ConnectMagar.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ConnectMagar.Controllers
 {
@@ -118,7 +119,10 @@ namespace ConnectMagar.Controllers
         [Route("Profile")]
         public IActionResult Profile()
         {
-            return View();
+            ProfileViewModel model = new ProfileViewModel();
+            model.StatesOfNepal = LookUp.GetStatesOfNepal().Select(x=> new SelectListItem { Value = x, Text = x }).ToList();
+            model.StatesOfUSA = LookUp.GetStatesOfUSA().Select(x=> new SelectListItem { Value = x.Value, Text = x.Value }).ToList();
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
