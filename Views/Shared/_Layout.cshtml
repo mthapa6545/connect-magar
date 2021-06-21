@@ -53,7 +53,7 @@
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     
-                    <img src="/img/persons/@User.Claims.FirstOrDefault(c => c.Type == "image").Value" alt="mdo" width="32" height="32" class="rounded-circle">
+                    <img src="/img/persons/@User.Claims.FirstOrDefault(c => c.Type == "image").Value" alt="mdo" width="32" height="32" class="rounded-circle" onerror="imgError(this)">
                     @User.Claims.FirstOrDefault(c => c.Type == "displayname").Value
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
@@ -129,6 +129,17 @@
 
     <!-- Core plugin JavaScript-->
     <script src="/jquery-easing/jquery.easing.min.js"></script>
+    <script>
+      function imgError(me)
+      {
+        // place here the alternative image
+        var AlterNativeImg = "/img/persons/firstname-lastname-id.jpg";
+
+        // to avoid the case that even the alternative fails        
+        if(AlterNativeImg != me.src)
+          me.src = AlterNativeImg;
+      }
+  </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

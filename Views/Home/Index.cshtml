@@ -38,8 +38,8 @@
                 <div class="btn-group">
                   @if(User.Identity.IsAuthenticated) 
                   {
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Email</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Phone</button>
+                    <a href="mailto:@person.Email" class="btn btn-sm btn-outline-secondary"><i class="fas fa-envelope"></i>Email</a>
+                    <a href="tel:@person.Phone" class="btn btn-sm btn-outline-secondary"><i class="fas fa-phone"></i>Call</a>
                   }
                 </div>
                 <small class="text-muted">@ConnectMagar.Helper.Utility.GetPrettyDate(person.DateUpdated)</small>
@@ -52,18 +52,3 @@
       </div>
     </div>
   </div>
-
-@section Scripts
-{
-  <script>
-      function imgError(me)
-      {
-        // place here the alternative image
-        var AlterNativeImg = "/img/persons/firstname-lastname-id.jpg";
-
-        // to avoid the case that even the alternative fails        
-        if(AlterNativeImg != me.src)
-          me.src = AlterNativeImg;
-      }
-  </script>
-}

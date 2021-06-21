@@ -100,10 +100,8 @@ namespace ConnectMagar.Controllers
                 var account = _db.Accounts.FirstOrDefault(x=> x.Email== email.ToLower());
                 if(account != null  && _authService.VerifyPassword(account.Password, password))
                 {
-                    var imageFile = string.Format("{0}-{1}-{2}.jpg", account.FirstName.ToLower(), account.LastName.ToLower(), account.AccountID);
-                    var chk = System.IO.File.Exists(@"/img/persons/"+imageFile);
-                    if(!chk)
-                        imageFile="firstname-lastname-id.jpg";
+
+                    var imageFile = _db.Persons.FirstOrDefault(x=> x.Email == email.ToLower()).ImageFileName;
                     
                     var claims = new List<Claim>
                     {
@@ -245,7 +243,7 @@ namespace ConnectMagar.Controllers
             {
                 var fileExt = Path.GetExtension(model.ImageFile.FileName);
                  
-                var fileName = $"{person.FirstName}-{person.LastName}-{person.PersonID}.{fileExt}";
+                var fileName = $"{person.FirstName}-{person.LastName}-{person.PersonID}{fileExt}";
                 var path = Path.Combine(  
                     Directory.GetCurrentDirectory(), "wwwroot","img","persons",   
                   fileName); 
