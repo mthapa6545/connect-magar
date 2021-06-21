@@ -32,7 +32,11 @@ namespace ConnectMagar.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            List<Person> persons = _db.Persons
+            .Include(x=> x.USAAddress)
+            .Include(x=> x.NepalAddress)
+            .ToList();
+            return View(persons);
         }
 
         [Route("Register")]
