@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ConnectMagar.Services;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ConnectMagar.Controllers
 {
@@ -23,12 +24,14 @@ namespace ConnectMagar.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ConnectMagarContext _db;
         private readonly AuthService _authService;
+        private readonly IHostingEnvironment hostingEnvironment;
 
-        public HomeController(ILogger<HomeController> logger, ConnectMagarContext db)
+        public HomeController(ILogger<HomeController> logger, ConnectMagarContext db, IHostingEnvironment environment)
         {
             _logger = logger;
             _db= db;
             _authService = new AuthService();
+            hostingEnvironment = environment;
         }
 
         public IActionResult Index()
@@ -177,7 +180,7 @@ namespace ConnectMagar.Controllers
         [Route("Profile")]
         [HttpPost]
         [Authorize]
-        public IActionResult Profile(ProfileViewModel model)
+        public async Task<IActionResult> Profile(ProfileViewModel model)
         {
 
             model.StatesOfNepal = LookUp.GetStatesOfNepal().Select(x=> new SelectListItem { Value = x, Text = x }).ToList();
@@ -233,22 +236,36 @@ namespace ConnectMagar.Controllers
             person.NepalAddress.Country = "Nepal";
 
             person.DateUpdated = DateTime.Now;
+            
 
             _db.SaveChanges();
 
             //Copy image to folder
-            if(model.ImageFile.Length>0)
+            if(model.ImageFile.FileName.Length>0)
             {
                 var fileExt = Path.GetExtension(model.ImageFile.FileName);
-                var filePath = $"/img/persons/{model.Person.FirstName}-{model.Person.LastName}-{model.Person.PersonID}.{fileExt}";
+                 
+                var fileName = $"{person.FirstName}-{person.LastName}-{person.PersonID}.{fileExt}";
+                var path = Path.Combine(  
+                    Directory.GetCurrentDirectory(), "wwwroot","img","persons",   
+                  fileName); 
 
-                using (var stream = System.IO.File.Create(filePath))
+                using (var stream = System.IO.File.Create(path))
                 {
-                    model.ImageFile.CopyTo(stream);
+                    await model.ImageFile.CopyToAsync(stream);
                 }
+                person = _db.Persons
+                .FirstOrDefault(x=> x.Email== model.Person.Email.ToLower());
+
+                person.ImageFileName = fileName;
+                _db.SaveChanges();
+                ViewBag.Msg = "Information saved with image";
+            }
+            else
+            {
+                ViewBag.Msg = "Information saved without image file.";
             }
             
-            ViewBag.Msg = "Success";
             return View(model);
         }
 

@@ -10,14 +10,14 @@
 {
     <div class="alert alert-success">@ViewBag.Msg</div>
 }
-<form asp-controller="Home" asp-action="Profile" method="post">
+<form asp-controller="Home" asp-action="Profile" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6">
-            <label asp-for="ImageFile" class="form-label">Please select photo</label>
-            <input type="file" class="form-control" asp-for="ImageFile" placeholder="photo">
+            <label class="form-label">Please select photo</label>
+            <input class="form-control" asp-for="ImageFile" placeholder="photo">
         </div>
         <div class="col-md-6">
-            <img src="...">
+            @* <img src="..."> *@
         </div>
     </div>
     <div class="row mt-5">
