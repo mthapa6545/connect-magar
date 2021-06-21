@@ -12,6 +12,8 @@ namespace ConnectMagar.Models
 
         public string StateOfUSA { get; set; }
         public string StateOfNepal { get; set; }
+
+        public string Gender { get; set; }
         
     }
 }

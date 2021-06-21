@@ -10,8 +10,8 @@ namespace ConnectMagar.Models
         public int Gender { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public Address Nepal { get; set; }
-        public Address USA { get; set; }
+        public Address NepalAddress { get; set; }
+        public Address USAAddress { get; set; }
         public bool Approved { get; set; }
         public bool Visible { get; set; }
 

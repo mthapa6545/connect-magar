@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using ConnectMagar.Data;
 using ConnectMagar.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConnectMagar.Controllers
 {
@@ -44,7 +45,23 @@ namespace ConnectMagar.Controllers
         {
             if(ModelState.IsValid)
             {
+                model.DateCreated = DateTime.Now;
+
                 _db.Accounts.Add(model);
+               
+
+                //save info to person table
+                _db.Persons.Add(new Person()
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    Phone = model.Phone,
+                    Approved = true,
+                    Visible = true,
+                    DateCreated = DateTime.Now,
+                    DateApproved = DateTime.Now
+                });
                 _db.SaveChanges();
                 
                 TempData["Msg"]="Success";
@@ -62,11 +79,11 @@ namespace ConnectMagar.Controllers
 
         [Route("Login")]
         [HttpPost]
-        public async Task<IActionResult> LoginAsync(string username, string password)
+        public async Task<IActionResult> LoginAsync(string email, string password)
         {
             if(ModelState.IsValid)
             {
-                var account = _db.Accounts.FirstOrDefault(x=> x.Email== username);
+                var account = _db.Accounts.FirstOrDefault(x=> x.Email== email);
                 if(account != null  && account.Password == password)
                 {
                     var imageFile = string.Format("{0}-{1}-{2}.jpg", account.FirstName, account.LastName, account.AccountID);
@@ -76,7 +93,7 @@ namespace ConnectMagar.Controllers
                     
                     var claims = new List<Claim>
                     {
-                        new Claim("username", username),
+                        new Claim("email", email),
                         new Claim("image", imageFile),
                         new Claim("displayname", string.Format("{0} {1}", account.FirstName, account.LastName )),
                         new Claim("role", "User")
@@ -102,6 +119,10 @@ namespace ConnectMagar.Controllers
                             ViewBag.Error= "Username or password is incorrect.";
                         }
                     }
+                    else
+                    {
+                        ViewBag.Error="Account not found";
+                    }
                 }
                 _db.SaveChanges();
             }
@@ -122,11 +143,89 @@ namespace ConnectMagar.Controllers
         }
 
         [Route("Profile")]
+        [Authorize]
         public IActionResult Profile()
         {
             ProfileViewModel model = new ProfileViewModel();
+
             model.StatesOfNepal = LookUp.GetStatesOfNepal().Select(x=> new SelectListItem { Value = x, Text = x }).ToList();
             model.StatesOfUSA = LookUp.GetStatesOfUSA().Select(x=> new SelectListItem { Value = x.Value, Text = x.Value }).ToList();
+            var email=User.Claims.AsEnumerable().FirstOrDefault(c => c.Type == "email").Value;
+            model.Person = _db.Persons
+            .Include(x=>x.USAAddress)
+            .Include(x=>x.NepalAddress)
+            .FirstOrDefault(x=> x.Email == email);
+
+            if(model.Person == null)
+            {
+                ViewBag.Error="Account not found";
+            }
+            return View(model);
+        }
+
+        [Route("Profile")]
+        [HttpPost]
+        [Authorize]
+        public IActionResult Profile(ProfileViewModel model)
+        {
+
+            model.StatesOfNepal = LookUp.GetStatesOfNepal().Select(x=> new SelectListItem { Value = x, Text = x }).ToList();
+            model.StatesOfUSA = LookUp.GetStatesOfUSA().Select(x=> new SelectListItem { Value = x.Value, Text = x.Value }).ToList();
+            
+            var email=User.Claims.AsEnumerable().FirstOrDefault(c => c.Type == "email").Value; 
+            //if email is changed, update account table as well
+            if(email!=model.Person.Email)
+            {     
+                //check email if its already exist
+                if(_db.Persons.Any(x=> x.Email==model.Person.Email))
+                {
+                    ViewBag.Error="Email already exist in the system.";
+                    return View(model);
+                }
+                else
+                {
+                    var account = _db.Accounts.FirstOrDefault(x=> x.Email == email);
+                    account.Email = model.Person.Email;
+                    account.DateUpdated = DateTime.Now;
+                }
+            }
+
+
+
+            var person = _db.Persons
+            .Include(x=>x.USAAddress)
+            .Include(x=>x.NepalAddress)
+            .FirstOrDefault(x=> x.Email== email);
+
+            person.FirstName = model.Person.FirstName;
+            person.LastName= model.Person.LastName;
+            person.Gender = model.Person.Gender;
+            person.Phone = model.Person.Phone;
+            person.Email = model.Person.Email;
+            person.Bio = model.Person.Bio;
+            if(person.USAAddress==null)
+            {
+                person.USAAddress = new Address();
+            }
+            person.USAAddress.StreetName = model.Person.USAAddress.StreetName;
+            person.USAAddress.City = model.Person.USAAddress.City;
+            person.USAAddress.State = model.Person.USAAddress.State;
+            person.USAAddress.ZipCode = model.Person.USAAddress.ZipCode;
+            person.USAAddress.Country = "USA";
+
+            if(person.NepalAddress== null)
+            {
+                person.NepalAddress = new Address();
+            }
+            person.NepalAddress.City = model.Person.NepalAddress.City;
+            person.NepalAddress.State = model.Person.NepalAddress.State;
+            person.NepalAddress.Country = "Nepal";
+
+            person.DateUpdated = DateTime.Now;
+
+            _db.SaveChanges();
+            
+            ViewBag.Msg = "Success";
             return View(model);
         }
 

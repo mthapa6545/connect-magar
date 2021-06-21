@@ -4,14 +4,16 @@ using ConnectMagar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ConnectMagar.Migrations
 {
     [DbContext(typeof(ConnectMagarContext))]
-    partial class ConnectMagarContextModelSnapshot : ModelSnapshot
+    [Migration("20210621004846_PersonTableUpdated")]
+    partial class PersonTableUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
