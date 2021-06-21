@@ -24,14 +24,12 @@ namespace ConnectMagar.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ConnectMagarContext _db;
         private readonly AuthService _authService;
-        private readonly IHostingEnvironment hostingEnvironment;
 
-        public HomeController(ILogger<HomeController> logger, ConnectMagarContext db, IHostingEnvironment environment)
+        public HomeController(ILogger<HomeController> logger, ConnectMagarContext db)
         {
             _logger = logger;
             _db= db;
             _authService = new AuthService();
-            hostingEnvironment = environment;
         }
 
         public IActionResult Index()
