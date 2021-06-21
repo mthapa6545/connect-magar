@@ -72,7 +72,7 @@ namespace ConnectMagar.Controllers
                     var imageFile = string.Format("{0}-{1}-{2}.jpg", account.FirstName, account.LastName, account.AccountID);
                     var chk = System.IO.File.Exists(@"/img/persons/"+imageFile);
                     if(!chk)
-                        imageFile="firstname-lastname-id-jpg";
+                        imageFile="firstname-lastname-id.jpg";
                     
                     var claims = new List<Claim>
                     {
