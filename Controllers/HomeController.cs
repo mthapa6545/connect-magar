@@ -12,6 +12,7 @@ using ConnectMagar.Data;
 using ConnectMagar.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ConnectMagar.Services;
 
 namespace ConnectMagar.Controllers
 {
@@ -20,11 +21,13 @@ namespace ConnectMagar.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ConnectMagarContext _db;
+        private readonly AuthService _authService;
 
         public HomeController(ILogger<HomeController> logger, ConnectMagarContext db)
         {
             _logger = logger;
             _db= db;
+            _authService = new AuthService();
         }
 
         public IActionResult Index()
@@ -46,6 +49,7 @@ namespace ConnectMagar.Controllers
             if(ModelState.IsValid)
             {
                 model.DateCreated = DateTime.Now;
+                model.Password = _authService.HashPassword(model.Password);
 
                 _db.Accounts.Add(model);
                
@@ -84,7 +88,7 @@ namespace ConnectMagar.Controllers
             if(ModelState.IsValid)
             {
                 var account = _db.Accounts.FirstOrDefault(x=> x.Email== email);
-                if(account != null  && account.Password == password)
+                if(account != null  && _authService.VerifyPassword(account.Password, password))
                 {
                     var imageFile = string.Format("{0}-{1}-{2}.jpg", account.FirstName, account.LastName, account.AccountID);
                     var chk = System.IO.File.Exists(@"/img/persons/"+imageFile);
