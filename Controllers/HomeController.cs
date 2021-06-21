@@ -69,10 +69,15 @@ namespace ConnectMagar.Controllers
                 var account = _db.Accounts.FirstOrDefault(x=> x.Email== username);
                 if(account != null  && account.Password == password)
                 {
+                    var imageFile = string.Format("{0}-{1}-{2}.jpg", account.FirstName, account.LastName, account.AccountID);
+                    var chk = System.IO.File.Exists(@"/img/persons/"+imageFile);
+                    if(!chk)
+                        imageFile="firstname-lastname-id-jpg";
+                    
                     var claims = new List<Claim>
                     {
                         new Claim("username", username),
-                        new Claim("image", string.Format("{0}-{1}-{2}.jpg",account.FirstName, account.LastName, account.AccountID)),
+                        new Claim("image", imageFile),
                         new Claim("displayname", string.Format("{0} {1}", account.FirstName, account.LastName )),
                         new Claim("role", "User")
                     };
