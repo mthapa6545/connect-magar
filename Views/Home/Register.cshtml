@@ -50,12 +50,17 @@
                                     </div>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="termcond">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Terms and conditions.
-                                    </label>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="togglePsw" onclick="togglePsw()">
+                                        <label class="custom-control-label" for="togglePsw">Show Password</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="term" onclick="termCondtion(this)">
+                                        <label class="custom-control-label" for="term">Terms and conditions.</label>
+                                    </div>
+
                                 </div>
-                                <button class="btn btn-primary btn-user btn-block mt-3">
+                                <button id="btnRegister" class="btn btn-primary btn-user btn-block mt-3" disabled>
                                     Register Account
                                 </button>
                                 <a href="/" class="btn btn-secondary btn-user btn-block">
@@ -74,3 +79,34 @@
                 </div>
             </div>
         </div>
+
+
+@section Scripts
+{
+    <script>
+        function togglePsw() {
+            var x = document.getElementById("exampleInputPassword");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+
+            var y = document.getElementById("exampleRepeatPassword");
+            if (y.type === "password") {
+                y.type = "text";
+            } else {
+                y.type = "password";
+            }
+        }
+        function termCondtion(input) {
+            var btn = document.getElementById("btnRegister");
+            if (input.checked == true){
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+
+        }
+    </script>
+}

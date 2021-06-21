@@ -36,11 +36,14 @@
                                             <input name="password" type="password" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="Password">
                                         </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
+                                        <div class="form-check">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="togglePsw" onclick="togglePsw()">
+                                                <label class="custom-control-label" for="togglePsw">Show Password</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
+                                                <label class="custom-control-label" for="customCheck">Remember Me</label>
                                             </div>
                                         </div>
                                         <button class="btn btn-primary btn-user btn-block">
@@ -67,3 +70,17 @@
             </div>
 
         </div>
+
+@section Scripts
+{
+    <script>
+        function togglePsw() {
+            var x = document.getElementById("exampleInputPassword");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+}
