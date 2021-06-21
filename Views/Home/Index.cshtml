@@ -19,21 +19,30 @@
         {
             <div class="col">
           <div class="card shadow-sm">
-            <img src="/img/persons/person5.jpg" class="bd-placeholder-img card-img-top" width="100%" height="180">
+            <img src="/img/persons/@string.Format("{0}-{1}-{2}.jpg", person.FirstName.ToLower(), person.LastName.ToLower(), person.PersonID)" class="bd-placeholder-img card-img-top" width="100%" height="180" onerror="imgError(this)">
             
             <div class="card-body">
                <h5 class="card-title">@string.Format("{0} {1}",person.FirstName, person.LastName)</h5>
-              <p class="card-text">Short Bio goes here.</p>
+              <p class="card-text">@person.Bio</p>
               <div class="card-text">
-                <label>Nepal Address</label>
-                <label>USA Address</label>
+                <strong>Address</strong>
+                @if(person.USAAddress != null){
+                  <p>@person.USAAddress.StreetName, @person.USAAddress.City, @person.USAAddress.State, @person.USAAddress.ZipCode</p>
+                }
+                <strong>From</strong>
+                @if(person.NepalAddress != null){
+                  <p>@person.NepalAddress.City, @person.NepalAddress.State</p>
+                }
               </div>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Email</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Phone</button>
+                  @if(User.Identity.IsAuthenticated) 
+                  {
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Email</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Phone</button>
+                  }
                 </div>
-                <small class="text-muted">9 mins ago</small>
+                <small class="text-muted">@ConnectMagar.Helper.Utility.GetPrettyDate(person.DateUpdated)</small>
               </div>
             </div>
           </div>
@@ -43,3 +52,18 @@
       </div>
     </div>
   </div>
+
+@section Scripts
+{
+  <script>
+      function imgError(me)
+      {
+        // place here the alternative image
+        var AlterNativeImg = "/img/persons/firstname-lastname-id.jpg";
+
+        // to avoid the case that even the alternative fails        
+        if(AlterNativeImg != me.src)
+          me.src = AlterNativeImg;
+      }
+</script>
+}

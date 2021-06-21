@@ -52,6 +52,8 @@ namespace ConnectMagar.Controllers
         {
             if(ModelState.IsValid)
             {
+                model.Email = model.Email.Trim();
+                model.Phone = model.Phone.Trim();
                 model.DateCreated = DateTime.Now;
                 model.Password = _authService.HashPassword(model.Password);
 
@@ -61,10 +63,10 @@ namespace ConnectMagar.Controllers
                 //save info to person table
                 _db.Persons.Add(new Person()
                 {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    Phone = model.Phone,
+                    FirstName = model.FirstName.Trim(),
+                    LastName = model.LastName.Trim(),
+                    Email = model.Email.Trim(),
+                    Phone = model.Phone.Trim(),
                     Approved = true,
                     Visible = true,
                     DateCreated = DateTime.Now,
@@ -91,17 +93,17 @@ namespace ConnectMagar.Controllers
         {
             if(ModelState.IsValid)
             {
-                var account = _db.Accounts.FirstOrDefault(x=> x.Email== email);
+                var account = _db.Accounts.FirstOrDefault(x=> x.Email== email.ToLower());
                 if(account != null  && _authService.VerifyPassword(account.Password, password))
                 {
-                    var imageFile = string.Format("{0}-{1}-{2}.jpg", account.FirstName, account.LastName, account.AccountID);
+                    var imageFile = string.Format("{0}-{1}-{2}.jpg", account.FirstName.ToLower(), account.LastName.ToLower(), account.AccountID);
                     var chk = System.IO.File.Exists(@"/img/persons/"+imageFile);
                     if(!chk)
                         imageFile="firstname-lastname-id.jpg";
                     
                     var claims = new List<Claim>
                     {
-                        new Claim("email", email),
+                        new Claim("email", email.ToLower()),
                         new Claim("image", imageFile),
                         new Claim("displayname", string.Format("{0} {1}", account.FirstName, account.LastName )),
                         new Claim("role", "User")
@@ -182,10 +184,10 @@ namespace ConnectMagar.Controllers
             
             var email=User.Claims.AsEnumerable().FirstOrDefault(c => c.Type == "email").Value; 
             //if email is changed, update account table as well
-            if(email!=model.Person.Email)
+            if(email!=model.Person.Email.ToLower())
             {     
                 //check email if its already exist
-                if(_db.Persons.Any(x=> x.Email==model.Person.Email))
+                if(_db.Persons.Any(x=> x.Email==model.Person.Email.ToLower()))
                 {
                     ViewBag.Error="Email already exist in the system.";
                     return View(model);
@@ -193,7 +195,7 @@ namespace ConnectMagar.Controllers
                 else
                 {
                     var account = _db.Accounts.FirstOrDefault(x=> x.Email == email);
-                    account.Email = model.Person.Email;
+                    account.Email = model.Person.Email.ToLower();
                     account.DateUpdated = DateTime.Now;
                 }
             }
@@ -203,13 +205,13 @@ namespace ConnectMagar.Controllers
             var person = _db.Persons
             .Include(x=>x.USAAddress)
             .Include(x=>x.NepalAddress)
-            .FirstOrDefault(x=> x.Email== email);
+            .FirstOrDefault(x=> x.Email== model.Person.Email.ToLower());
 
-            person.FirstName = model.Person.FirstName;
-            person.LastName= model.Person.LastName;
+            person.FirstName = model.Person.FirstName.Trim().ToLower();
+            person.LastName= model.Person.LastName.Trim().ToLower();
             person.Gender = model.Person.Gender;
-            person.Phone = model.Person.Phone;
-            person.Email = model.Person.Email;
+            person.Phone = model.Person.Phone.Trim();
+            person.Email = model.Person.Email.Trim().ToLower();
             person.Bio = model.Person.Bio;
             if(person.USAAddress==null)
             {
