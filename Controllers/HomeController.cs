@@ -100,7 +100,10 @@ namespace ConnectMagar.Controllers
                 {
 
                     var imageFile = _db.Persons.FirstOrDefault(x=> x.Email == email.ToLower()).ImageFileName;
-                    
+                    if(string.IsNullOrEmpty(imageFile))
+                    {
+                        imageFile="firstname-lastname-0.jpg";
+                    }
                     var claims = new List<Claim>
                     {
                         new Claim("email", email.ToLower()),
